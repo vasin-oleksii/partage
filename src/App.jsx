@@ -8,7 +8,6 @@ import {
   Heading,
   Spinner,
   Box,
-  Portal,
   Avatar,
   Link,
   Tooltip,
@@ -31,6 +30,11 @@ function App() {
   };
 
   useEffect(() => {
+    const storageValue = localStorage.getItem("inputValue");
+    if (storageValue) {
+      setValueFromLocal(storageValue);
+    }
+
     fetchData();
   }, []);
 
@@ -66,8 +70,13 @@ function App() {
   }, [valueFromLocal]);
 
   const handleClear = () => {
-    setValueFromLocal("");
+    handleChange("");
     handleSubmit("");
+  };
+
+  const handleChange = (value) => {
+    setValueFromLocal(value);
+    localStorage.setItem("inputValue", value);
   };
 
   return (
@@ -88,8 +97,13 @@ function App() {
             return (
               <Tooltip label="Click to copy" key={id}>
                 <Box
-                  onClick={() => {
-                    navigator.clipboard.writeText(string);
+                  display={isLoading ? "none" : "block"}
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(string);
+                    } catch (e) {
+                      console.error(e);
+                    }
                   }}
                 >
                   {string}
@@ -106,7 +120,7 @@ function App() {
         w="300px"
         value={valueFromLocal}
         borderRadius="4px"
-        onChange={(e) => setValueFromLocal(e.currentTarget.value)}
+        onChange={(e) => handleChange(e.currentTarget.value)}
         p="10px 10px"
         resize="none"
         maxlength="100"
