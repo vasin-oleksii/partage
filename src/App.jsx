@@ -123,7 +123,6 @@ function App() {
         onChange={(e) => handleChange(e.currentTarget.value)}
         p="10px 10px"
         resize="none"
-        maxlength="100"
       />
       <HStack>
         {/* <Button
