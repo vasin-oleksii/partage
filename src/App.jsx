@@ -30,10 +30,10 @@ function App() {
   };
 
   useEffect(() => {
-    const storageValue = localStorage.getItem("inputValue");
-    if (storageValue) {
-      setValueFromLocal(storageValue);
-    }
+    // const storageValue = localStorage.getItem("inputValue");
+    // if (storageValue) {
+    //   setValueFromLocal(storageValue);
+    // }
 
     fetchData();
   }, []);
@@ -76,7 +76,7 @@ function App() {
 
   const handleChange = (value) => {
     setValueFromLocal(value);
-    localStorage.setItem("inputValue", value);
+    // localStorage.setItem("inputValue", value);
   };
 
   return (
