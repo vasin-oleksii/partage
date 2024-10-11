@@ -12,7 +12,7 @@ import {
   Link,
   Tooltip,
 } from "@chakra-ui/react";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
 
 function App() {
   const [valueFromServer, setValueFromServer] = useState([]);
@@ -20,13 +20,21 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchData = async () => {
-    setIsLoading(true);
-    const fetching = await fetch(
-      "https://6706c742a0e04071d2283a54.mockapi.io/api/v1/data"
-    );
-    const json = await fetching.json();
-    setValueFromServer(json);
-    setIsLoading(false);
+    try {
+      const response = await fetch(
+        "https://6706c742a0e04071d2283a54.mockapi.io/api/v1/data"
+      );
+      const newData = await response.json();
+
+      if (JSON.stringify(newData) !== JSON.stringify(valueFromServer)) {
+        setIsLoading(true);
+
+        setValueFromServer(newData);
+        setIsLoading(false);
+      }
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
@@ -34,8 +42,10 @@ function App() {
     // if (storageValue) {
     //   setValueFromLocal(storageValue);
     // }
-
     fetchData();
+
+    const pollingInterval = setInterval(fetchData, 1000);
+    return () => clearInterval(pollingInterval);
   }, []);
 
   const handleSubmit = async (value) => {
@@ -48,7 +58,7 @@ function App() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ string: value }),
+          body: JSON.stringify({ string: value, id: 1 }),
         }
       );
       const json = await puting.json();
@@ -121,16 +131,17 @@ function App() {
         value={valueFromLocal}
         borderRadius="4px"
         onChange={(e) => handleChange(e.currentTarget.value)}
-        p="10px 10px"
+        p={"10px 10px"}
         resize="none"
       />
       <HStack>
-        {/* <Button
+        <Button
           onClick={() => handleSubmit(valueFromLocal)}
           isLoading={isLoading}
         >
           Submit
-        </Button> */}
+          <StarIcon ml="6px" />
+        </Button>
         <Button onClick={handleClear} isLoading={isLoading}>
           Clear
           <DeleteIcon ml="6px" />
