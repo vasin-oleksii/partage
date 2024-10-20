@@ -12,14 +12,17 @@ import {
   Link,
   Tooltip,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
-import Tasks from "./tasks/tasks";
+import Tasks from "./tasks/Tasks";
 
 function App() {
   const [valueFromServer, setValueFromServer] = useState([]);
   const [valueFromLocal, setValueFromLocal] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  const toast = useToast();
 
   const [showTasks, setShowTasks] = useState(false);
 
@@ -94,88 +97,115 @@ function App() {
   };
 
   return (
-    <VStack spacing="10px">
-      <Box className={showTasks ? "none" : "Partage-form"}>
-        <HStack align="center" justify="center">
-          <Heading m="0px" fontSize="46px">
-            Partage:
-          </Heading>
-          <Box
-            background="purple"
-            variant="solid"
-            borderRadius="4px"
-            fontSize="20px"
-            p="5px 6px"
-          >
-            {isLoading && <Spinner boxSize="40px" />}
-            {valueFromServer.map(({ string, id }) => {
-              return (
-                <Tooltip label="Click to copy" key={id}>
+    <Flex justify="center" align="center" height="100vh" background="black">
+      <VStack
+        spacing="10px"
+        padding="20px 30px"
+        background="white"
+        borderRadius="20px"
+      >
+        <Box className={showTasks ? "none" : "Partage-form"}>
+          <HStack align="center" justify="center" position="relative">
+            <Heading m="0px" fontSize="46px">
+              Partage 🤬
+            </Heading>
+            <Box>
+              {isLoading && <Spinner boxSize="40px" />}
+              {valueFromServer.map(({ string, id }) => {
+                return (
                   <Box
-                    display={isLoading ? "none" : "block"}
-                    onClick={async () => {
-                      try {
-                        await navigator.clipboard.writeText(string);
-                      } catch (e) {
-                        console.error(e);
-                      }
-                    }}
+                    position="absolute"
+                    background="purple"
+                    variant="solid"
+                    borderRadius="4px"
+                    fontSize="20px"
+                    p="5px 6px"
+                    top="10px"
+                    color="white"
+                    cursor="pointer"
+                    maxW="300px"
+                    maxH="50vh"
+                    overflow="hidden"
+                    key={id}
+                    noOfLines={13}
                   >
-                    {string}
+                    <Tooltip label="Click to copy 👇" bg="white" color="black">
+                      <Box
+                        display={isLoading ? "none" : "block"}
+                        onClick={async () => {
+                          try {
+                            await navigator.clipboard.writeText(string);
+                            toast({
+                              title: "It's copied 👍 ✨",
+                              description:
+                                "You copied the content from the form",
+                              status: "success",
+                              duration: 9000,
+                              isClosable: true,
+                            });
+                            //!
+                          } catch (e) {
+                            console.error(e);
+                          }
+                        }}
+                      >
+                        {string}
+                      </Box>
+                    </Tooltip>
                   </Box>
-                </Tooltip>
-              );
-            })}
-          </Box>
-        </HStack>
+                );
+              })}
+            </Box>
+          </HStack>
 
-        <Textarea
-          mt="20px"
-          placeholder="Write here your information for @Partage"
-          height="200px"
-          width="250px"
-          value={valueFromLocal}
-          borderRadius="4px"
-          onChange={(e) => handleChange(e.currentTarget.value)}
-          p={"10px 10px"}
-          resize="none"
-        />
-        <HStack justify="center" mt="20px">
-          <Button
-            onClick={() => handleSubmit(valueFromLocal)}
-            isLoading={isLoading}
-          >
-            Submit
-            <StarIcon ml="6px" />
-          </Button>
-          <Button onClick={handleClear} isLoading={isLoading}>
-            Clear
-            <DeleteIcon ml="6px" />
-          </Button>
-        </HStack>
-        <Box position="absolute" bottom="50%" left="10px">
-          <Tooltip label="Repository Github">
-            <Link href="https://github.com/vasin-oleksii/partage">
-              <Avatar
-                name="GitHub link"
-                src="https://img.icons8.com/m_sharp/200/FFFFFF/github.png"
-                borderRadius="50%"
-                boxSize="35px"
-                transition="all 0.2s"
-                _hover={{ boxSize: "45px", transition: "all 0.2s" }}
-              />
-            </Link>
-          </Tooltip>
+          <Textarea
+            mt="20px"
+            placeholder="Write here your information for @Partage"
+            height="200px"
+            width="250px"
+            value={valueFromLocal}
+            borderRadius="4px"
+            onChange={(e) => handleChange(e.currentTarget.value)}
+            p={"10px 10px"}
+            resize="none"
+          />
+          <HStack justify="center" mt="20px">
+            <Button
+              onClick={() => handleSubmit(valueFromLocal)}
+              isLoading={isLoading}
+            >
+              Submit
+              <StarIcon ml="6px" />
+            </Button>
+            <Button onClick={handleClear} isLoading={isLoading}>
+              Clear
+              <DeleteIcon ml="6px" />
+            </Button>
+          </HStack>
+          <Box position="absolute" bottom="50%" left="10px">
+            <Tooltip label="Repository Github">
+              <Link href="https://github.com/vasin-oleksii/partage">
+                <Avatar
+                  name="GitHub link"
+                  src="https://img.icons8.com/m_sharp/200/FFFFFF/github.png"
+                  borderRadius="50%"
+                  boxSize="35px"
+                  transition="all 0.2s"
+                  _hover={{ boxSize: "45px", transition: "all 0.2s" }}
+                />
+              </Link>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-      {showTasks ? (
-        <Tasks />
-      ) : (
-        <Button onClick={() => setShowTasks(true)} opacity="0.2">
-          Show @Partage-Tasks?
-        </Button>
-      )}
-    </VStack>
+        {showTasks ? (
+          <Tasks />
+        ) : (
+          <Button onClick={() => setShowTasks(true)} opacity="0.2">
+            Show @Partage-Tasks?
+          </Button>
+        )}
+      </VStack>
+    </Flex>
   );
 }
 
