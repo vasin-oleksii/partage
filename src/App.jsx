@@ -120,7 +120,9 @@ function App() {
                     borderRadius="4px"
                     fontSize="20px"
                     p="5px 6px"
-                    top="10px"
+                    top={{ base: "-100px", md: "10px" }}
+                    left={{ base: "-100px", md: "auto" }}
+                    ml={{ base: "0px", lg: "40px" }}
                     color="white"
                     cursor="pointer"
                     maxW="300px"
