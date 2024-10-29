@@ -9,9 +9,9 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { CheckIcon, CloseIcon, DeleteIcon } from "@chakra-ui/icons";
+import { CheckIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const $URL = "https://6706c742a0e04071d2283a54.mockapi.io/api/v1/data";
 
@@ -21,7 +21,7 @@ const Tasks = () => {
     Number(localStorage.getItem("coinsEarned"))
   );
   const [isLoading, setIsLoading] = useState(false);
-  const [isAddDivider, setIsAddDivider] = useState(false);
+  const [focustOnTask, setFocustOnTask] = useState(0);
 
   const {
     isLoading: isFetchingData,
@@ -78,7 +78,6 @@ const Tasks = () => {
       <InputGroup>
         <Input
           placeholder="your task"
-          w="500px"
           p="6px 10px"
           borderRadius="62px 0 0 62px "
           value={taskInputValue}
@@ -93,21 +92,23 @@ const Tasks = () => {
         >
           Just do it!
         </Button>
-        <Button
-          borderRadius="0 62px 62px 0"
-          borderColor="white"
-          onClick={() => setIsAddDivider(true)}
-        >
-          add Divider
-        </Button>
       </InputGroup>
       <VStack spacing="5px">
         {isFetchingData || isLoading ? (
           <Spinner />
         ) : (
           allTaskToShowData.map((el, i) => {
+            const isActiveElement = i === focustOnTask;
             return (
-              <Flex align="center" justify="center" key={i}>
+              <Flex
+                align="center"
+                justify="center"
+                key={i}
+                onClick={() => setFocustOnTask(i)}
+                borderRadius="12px"
+                border={isActiveElement ? "4px solid red" : "none"}
+                p="10px 20px"
+              >
                 <CheckIcon
                   mr="15px"
                   cursor="pointer"
@@ -117,7 +118,14 @@ const Tasks = () => {
                     handleCoinsEarned(coinsEarned + 1);
                   }}
                 />
-                <Text key={i}>{el.string}</Text>
+                <Text
+                  key={i}
+                  fontSize={isActiveElement ? "30px" : "16px"}
+                  fontWeight={isActiveElement ? "700" : "400"}
+                  cursor="pointer"
+                >
+                  {el.string}
+                </Text>
 
                 <DeleteIcon
                   ml="10px"
