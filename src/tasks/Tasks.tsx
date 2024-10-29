@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Flex,
+  Heading,
   Input,
   InputGroup,
   Spinner,
@@ -10,14 +11,17 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useFetch } from "../hooks/useFetch";
-import { CloseIcon, DeleteIcon } from "@chakra-ui/icons";
+import { CheckIcon, CloseIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const $URL = "https://6706c742a0e04071d2283a54.mockapi.io/api/v1/data";
 
 const Tasks = () => {
   const [taskInputValue, setTaskInputValue] = useState("");
-  const [groupTasks, setGroupTasks] = useState([]);
+  const [coinsEarned, setCoinsEarned] = useState(
+    Number(localStorage.getItem("coinsEarned"))
+  );
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddDivider, setIsAddDivider] = useState(false);
 
   const {
     isLoading: isFetchingData,
@@ -48,6 +52,10 @@ const Tasks = () => {
     }
   };
 
+  const handleCoinsEarned = (num) => {
+    localStorage.setItem("coinsEarned", `${num}`);
+  };
+
   const handleSubmit = () => {
     postData();
   };
@@ -66,6 +74,7 @@ const Tasks = () => {
 
   return (
     <>
+      <Heading>{coinsEarned}</Heading>
       <InputGroup>
         <Input
           placeholder="your task"
@@ -84,6 +93,13 @@ const Tasks = () => {
         >
           Just do it!
         </Button>
+        <Button
+          borderRadius="0 62px 62px 0"
+          borderColor="white"
+          onClick={() => setIsAddDivider(true)}
+        >
+          add Divider
+        </Button>
       </InputGroup>
       <VStack spacing="5px">
         {isFetchingData || isLoading ? (
@@ -92,6 +108,15 @@ const Tasks = () => {
           allTaskToShowData.map((el, i) => {
             return (
               <Flex align="center" justify="center" key={i}>
+                <CheckIcon
+                  mr="15px"
+                  cursor="pointer"
+                  onClick={() => {
+                    setCoinsEarned((prev) => prev + 1);
+                    deleteData(el.id);
+                    handleCoinsEarned(coinsEarned + 1);
+                  }}
+                />
                 <Text key={i}>{el.string}</Text>
 
                 <DeleteIcon
