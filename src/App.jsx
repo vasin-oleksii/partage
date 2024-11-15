@@ -4,7 +4,6 @@ import {
   VStack,
   Textarea,
   Button,
-  Heading,
   Spinner,
   Box,
   Avatar,
@@ -14,6 +13,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
+import HeaderName from "./components/header/HeaderName";
 
 function App() {
   const [valueFromServer, setValueFromServer] = useState([]);
@@ -104,9 +104,8 @@ function App() {
       >
         <Box>
           <HStack align="center" justify="center" position="relative">
-            <Heading m="0px" fontSize="46px">
-              Partage 🤬
-            </Heading>
+            <HeaderName />
+
             <Box>
               {isLoading && <Spinner boxSize="40px" />}
               {valueFromServer.map(({ string, id }) => {
@@ -118,7 +117,7 @@ function App() {
                     borderRadius="4px"
                     fontSize="20px"
                     p="5px 6px"
-                    top={{ base: "50vh", md: "10px" }}
+                    top={{ base: "65vh", md: "10px" }}
                     left={{ base: "-25px", md: "auto" }}
                     ml={{ base: "0px", lg: "40px" }}
                     color="white"
