@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 import {
   HStack,
   VStack,
@@ -89,14 +88,21 @@ function App() {
   };
 
   return (
-    <Flex justify="center" align="center" height="100vh" background="black">
+    <Flex
+      justify="center"
+      align="center"
+      height="100vh"
+      background="black"
+      overflow="hidden"
+    >
       <VStack
         spacing="10px"
         padding="20px 30px"
         background="white"
         borderRadius="20px"
+        marginTop={{ base: "-5rem", md: "0px" }}
       >
-        <Box className={"Partage-form"}>
+        <Box>
           <HStack align="center" justify="center" position="relative">
             <Heading m="0px" fontSize="46px">
               Partage 🤬
@@ -112,8 +118,8 @@ function App() {
                     borderRadius="4px"
                     fontSize="20px"
                     p="5px 6px"
-                    top={{ base: "-100px", md: "10px" }}
-                    left={{ base: "-100px", md: "auto" }}
+                    top={{ base: "50vh", md: "10px" }}
+                    left={{ base: "-25px", md: "auto" }}
                     ml={{ base: "0px", lg: "40px" }}
                     color="white"
                     cursor="pointer"
