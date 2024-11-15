@@ -15,7 +15,6 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
-import Tasks from "./tasks/Tasks";
 
 function App() {
   const [valueFromServer, setValueFromServer] = useState([]);
@@ -23,8 +22,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const toast = useToast();
-
-  const [showTasks, setShowTasks] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -45,10 +42,6 @@ function App() {
   };
 
   useEffect(() => {
-    // const storageValue = localStorage.getItem("inputValue");
-    // if (storageValue) {
-    //   setValueFromLocal(storageValue);
-    // }
     fetchData();
 
     const pollingInterval = setInterval(fetchData, 1000);
@@ -93,7 +86,6 @@ function App() {
 
   const handleChange = (value) => {
     setValueFromLocal(value);
-    // localStorage.setItem("inputValue", value);
   };
 
   return (
@@ -104,7 +96,7 @@ function App() {
         background="white"
         borderRadius="20px"
       >
-        <Box className={showTasks ? "none" : "Partage-form"}>
+        <Box className={"Partage-form"}>
           <HStack align="center" justify="center" position="relative">
             <Heading m="0px" fontSize="46px">
               Partage 🤬
@@ -199,13 +191,6 @@ function App() {
             </Tooltip>
           </Box>
         </Box>
-        {showTasks ? (
-          <Tasks />
-        ) : (
-          <Button onClick={() => setShowTasks(true)} opacity="0.2">
-            Show @Partage-Tasks?
-          </Button>
-        )}
       </VStack>
     </Flex>
   );
