@@ -14,6 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteIcon, StarIcon } from "@chakra-ui/icons";
 import HeaderName from "./components/header/HeaderName";
+import Draggable from "./components/shared/draggable/Draggable";
 
 function App() {
   const [valueFromServer, setValueFromServer] = useState([]);
@@ -181,20 +182,23 @@ function App() {
               <DeleteIcon ml="6px" />
             </Button>
           </HStack>
-          <Box position="absolute" bottom="50%" left="10px">
-            <Tooltip label="Repository Github">
-              <Link href="https://github.com/vasin-oleksii/partage">
-                <Avatar
-                  name="GitHub link"
-                  src="https://img.icons8.com/m_sharp/200/FFFFFF/github.png"
-                  borderRadius="50%"
-                  boxSize="35px"
-                  transition="all 0.2s"
-                  _hover={{ boxSize: "45px", transition: "all 0.2s" }}
-                />
-              </Link>
-            </Tooltip>
-          </Box>
+
+          <Draggable text="It's repository">
+            <Box>
+              <Tooltip label="Repository Github">
+                <Link href="https://github.com/vasin-oleksii/partage">
+                  <Avatar
+                    name="GitHub link"
+                    src="https://img.icons8.com/m_sharp/200/FFFFFF/github.png"
+                    borderRadius="50%"
+                    boxSize="35px"
+                    transition="all 0.2s"
+                    // _hover={{ boxSize: "45px", transition: "all 0.2s" }}
+                  />
+                </Link>
+              </Tooltip>
+            </Box>
+          </Draggable>
         </Box>
       </VStack>
     </Flex>
