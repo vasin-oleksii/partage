@@ -35,7 +35,7 @@ const Draggable = ({ children, text }: { children: string; text: string }) => {
       left={isDraggable ? position.x - 35 : position.x}
       top={isDraggable ? position.y - 35 : position.y}
       // boxShadow={`${position.x} ${position.y} white`}
-      boxShadow={isDraggable ? "25px 25px 100px white" : ""}
+      boxShadow={isDraggable ? "25px 25px 20px white" : ""}
       cursor="grab"
       padding="10px"
       borderColor="white"
